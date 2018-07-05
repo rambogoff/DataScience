@@ -11,7 +11,8 @@ data = pd.read_csv("pokemon.csv") # pandas kütüphanesini kullanarak pokemon.cs
 
 data.info() # data ile ilgili bilgiler
 Out :
-![screenshot_1](https://user-images.githubusercontent.com/11053905/42327736-23764d7a-8075-11e8-8d29-e57288f2980d.png)
+![screenshot_1](https://user-images.githubusercontent.com/11053905/42327852-748e8600-8075-11e8-90b7-b71cc2912a2d.png)
+
 
 
 
