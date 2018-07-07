@@ -1,0 +1,101 @@
+# -*- coding: utf-8 -*-
+
+import numpy as np # linear algebra
+import pandas as pd # data processing
+import matplotlib.pyplot as pltmport seaborn as sns  # visualization tool
+
+
+data = pd.read_csv("pokemon.csv")
+#
+a = data.head() # head shows first 5 rows
+print(a)
+#
+b = data.tail() # tail shows last 5 rows
+#
+print(b) 
+#
+data.columns # column names
+#
+data.shape() # (row, column)
+#
+data.info() # info gives data
+#%% Exploratory Data Analysis (EDA)
+
+#%%  outlier (ayrık)
+ # 1,4,5,6,8,9,11,12,13,14,15,16,17
+ # Median %50 IQR(ortadaki sayı 11) # IQR = (Q3-Q1)
+ # Lower quartile %25 Q1(1-11 arasındaki sayının median 6)
+ # Upper quartile %75  Q3(11-17 arasındali sayının median 14)
+ # MİNUMUM = Q1 -1.5IQR
+ # MAXİMUM =1.5IQR + Q3
+
+
+#print(data['Type 1'].value_counts(dropna =False))
+ 
+aa = data.describe() # sadece nümeric olanları getirir
+print(aa)
+ 
+ 
+ #%% VISUAL EXPLORATORY DATA ANALYSIS
+# Box plots: outliers, min/max or quantiles
+ 
+data.boxplot( column = "Attack", by = "Legendary" )
+plt.show()
+
+
+ #%% Tidy and Pivoting Data
+# melt() fonksiyonu pandas library
+ # melt etmek datadan belli başlı featureları çıkarmak
+ 
+ 
+data_new = data.head()
+#
+melted = pd.melt(frame = data_new, id_vars = 'Name', value_vars=['Type 1', 'Type 2'])
+#
+melted.pivot(index = 'Name', columns = 'variable',values='value') 
+
+
+
+#%% CONCATENATING DATA
+# iki datayı birleştirir
+ 
+data1 = data.head()
+data2 = data.tail()
+
+conc_data_row = pd.concat([data1, data2], axis = 0, ignore_index = True)
+# axis = 0 vertical (dikey/ alt alta) bir şekilde 
+# ignore_index yeni index ata
+
+
+data3 = data['Attack'].head()
+data4 = data['Defense'].head()
+# Horizontal(yatay bir şekile yan-yana)
+conc_data_col1 = pd.concat([data3, data4], axis = 1)
+#%% DATA TYPES
+#☺ 
+data.dtypes # data verilerinin tipleri
+data ['Type 1'] = data['Type 1'].astype('category') # tipini değiştiriyor
+data ['Speed'] = data['Speed'].astype('float')
+#%% MISSING DATA and TESTING WITH ASSERT
+
+# Missing data //değeri olmayan yani NaN
+
+data.info()
+ # datamızın her farklı değerden kaç tane var onu hesaplıyoruz
+ # Nan varsa bunuda say (dropna)
+data["Type 2"].value_counts(dropna = False)
+#Nan olanları at dropna
+data["Type 2"].dropna(inplace = True)
+
+
+#assert 1 == 1 # hiçbirşey döndürmede doğru demek
+
+assert data['Type 2'].notnull().all()
+
+# column 1 Name mi ?
+assert data.columns[1] == 'Name' 
+# data.speed tipi int mi ?
+assert data.Speed.dtypes == np.int
+
+# data Type 2 yi empty ile doldurmak istiyorum
+data["Type 2"].fillna('empty',inplace = True)
